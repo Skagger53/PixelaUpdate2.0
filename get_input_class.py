@@ -1,8 +1,10 @@
 import datetime
-from logins import PIXELA_ENDPOINT, USERNAME, graph_id, TOKEN, THANKS_CODE
 import requests
 import json
 import os
+
+from logins import PIXELA_ENDPOINT, USERNAME, graph_id, TOKEN, THANKS_CODE
+from logo import logo
 
 class GetInput:
     def __init__(self):
@@ -24,6 +26,7 @@ class GetInput:
         self.date_to_update = self.date_obj.strftime("%Y%m%d") # Formatted to be compatible with Pixela
 
     def print_date_info(self): # displays date overview information
+        print(logo)
         print(f"Current value for {self.date_to_user}: {round(self.existing_val, 2)} hours/{round(self.existing_val * 60)} minutes.")
 
     def clear_screen(self): os.system("cls")
