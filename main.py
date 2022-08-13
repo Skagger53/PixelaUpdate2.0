@@ -16,8 +16,7 @@ user_input.get_val() # Gets number of hours or minutes to change from user
 
 # If the user enters an updated value of 0, this is ignored and the program ends.
 if user_input.new_val == 0:
-    print("\nNo update pushed. Press Enter to exit.")
-    input()
+    input("\nNo update pushed. Press Enter to exit.")
     sys.exit()
 
 # json data to send to Pixela
