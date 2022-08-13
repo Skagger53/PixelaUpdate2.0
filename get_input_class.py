@@ -113,6 +113,11 @@ class GetInput:
 
             # Validation succeeded. Changes class date variables to new date, displays the new date's data to the user, and ends the while loop
             else:
+                if self.new_date_obj.date() > datetime.datetime.today().date():
+                    input("\nYou cannot enter data for a date in the future.\n\nPress Enter to return to the main menu.\n")
+                    self.clear_screen()
+                    self.print_date_info()
+                    return
                 self.date_vars(self.new_date_obj)
                 self.get_pixela_data()
                 self.date_valid = True

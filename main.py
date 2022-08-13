@@ -32,7 +32,7 @@ update_json = {
 update_graph = requests.post(url = f"{user_input.PIXELA_ENDPOINT}/{user_input.USERNAME}/graphs/{user_input.graph_id}", headers = user_input.headers, json = update_json)
 
 # Informs user of the results. Should be 200, but any errors will list here.
-print(f"\nSent {user_input.date_to_user} update, with {round(user_input.new_val, 2)} hours/{round(user_input.new_val * 60, 2)} minutes.")
+print(f"\nSent {user_input.date_to_user}, update of {round(user_input.new_val, 2)} hours/{round(user_input.new_val * 60, 2)} minutes.")
 print(f"\n{update_graph}")
 print(update_graph.text)
 
