@@ -23,6 +23,7 @@ if user_input.new_val == 0:
 update_json = {
     "date": user_input.date_to_update,
     # Adds together the current value on Pixela to the new value provided by the user
+    # Prepends "0" in case user provides a decimal without a 0. Pixela will refuse an update such as ".5"; it must be "0.5". Additional prepended 0s will not cause any errors (e.g., "01.5" is fine).
     "quantity": "0" + str(user_input.existing_val + user_input.new_val),
     "thanksCode": user_input.THANKS_CODE,
 }
