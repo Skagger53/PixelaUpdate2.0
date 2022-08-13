@@ -1,3 +1,9 @@
+import sys
+
+if __name__ != "__main__":
+    print("This is the main file. Do not call.")
+    sys.exit()
+
 import requests
 
 from get_input_class import GetInput
@@ -12,7 +18,7 @@ user_input.get_val() # Gets number of hours or minutes to change from user
 if user_input.new_val == 0:
     print("\nNo update pushed. Press Enter to exit.")
     input()
-    raise SystemExit
+    sys.exit()
 
 # json data to send to Pixela
 update_json = {

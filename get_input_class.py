@@ -1,3 +1,9 @@
+import sys
+
+if __name__ == "__main__":
+    print("This is a supporting file. Do not execute this direclty.")
+    sys.exit()
+
 import datetime
 import requests
 import json
@@ -49,23 +55,23 @@ class GetInput:
         elif self.date_request.status_code == 500:
             print(f"Pixela internal server error. Retry.\n\nStatus code:\n{self.date_request.status_code}\n\nResponse (text):\n{self.date_request.text}\n\nPress Enter to exit.\n")
             input()
-            raise SystemExit
+            sys.exit()
         elif self.date_request.status_code == 503:
             print(f"Pixela service unavailable. Site is likely down.\n\nStatus code:\n{self.date_request.status_code}\n\nResponse (text):\n{self.date_request.text}\n\nPress Enter to exit.\n")
             input()
-            raise SystemExit
+            sys.exit()
         else:
             # Status code should ONLY be 200 (existing data) or 404 (no data yet but this process will add first data). Anything else requires investigation.
             print(f"Unexpected status code response for {self.date_to_user}:\n{self.date_request.status_code}\n\nPress Enter to exit.\n")
             input()
-            raise SystemExit
+            sys.exit()
 
     # Accepts user's input for changing current date's coding time (or changing the date)
     def get_input_type(self):
         self.input_accepted = False
         while self.input_accepted == False:
             self.hours_min = input("\n1. Hours\n2. Minutes\n3. Change date\n\n")
-            if self.hours_min.strip().lower() == "exit" or self.hours_min.strip().lower() == "close": raise SystemExit
+            if self.hours_min.strip().lower() == "exit" or self.hours_min.strip().lower() == "close": sys.exit()
             if self.hours_min not in ["1", "2", "3"]:
                 print("\nPlease select 1, 2, or 3.")
                 continue
@@ -91,7 +97,7 @@ class GetInput:
             # Strip input, change possible delimiters to "/", remove any commas (e.g., "August 1, 2022")
             self.new_date = self.new_date.strip().replace("-", "/").replace(".", "/").replace(",", "")
 
-            if self.new_date.lower() == "exit" or self.new_date.lower() == "close": raise SystemExit
+            if self.new_date.lower() == "exit" or self.new_date.lower() == "close": sys.exit()
 
             if self.new_date.lower() == "back":
                 self.clear_screen()
@@ -117,7 +123,7 @@ class GetInput:
         self.input_accepted = False
         while self.input_accepted == False:
             self.new_val = input(f"\nHow many additional {self.units} (as a float)?\n")
-            if self.new_val.strip().lower() == "exit" or self.new_val.strip().lower() == "close": raise SystemExit
+            if self.new_val.strip().lower() == "exit" or self.new_val.strip().lower() == "close": sys.exit()
             try: self.new_val = float(self.new_val)
             except ValueError: print("\nPlease enter a valid float.")
             else:
