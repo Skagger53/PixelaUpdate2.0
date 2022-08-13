@@ -1,7 +1,7 @@
 import sys
 
 if __name__ == "__main__":
-    print("This is a supporting file. Do not execute this direclty.")
+    print("This is a supporting file. Do not execute this directly.")
     sys.exit()
 
 import datetime
