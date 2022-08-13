@@ -62,8 +62,7 @@ class GetInput:
             sys.exit()
         else:
             # Status code should ONLY be 200 (existing data) or 404 (no data yet but this process will add first data). Anything else requires investigation.
-            print(f"Unexpected status code response for {self.date_to_user}:\n{self.date_request.status_code}\n\nPress Enter to exit.\n")
-            input()
+            input(f"Unexpected status code response for {self.date_to_user}:\n{self.date_request.status_code}\n\nPress Enter to exit.\n")
             sys.exit()
 
     # Accepts user's input for changing current date's coding time (or changing the date)
@@ -75,7 +74,7 @@ class GetInput:
             if self.hours_min not in ["1", "2", "3"]:
                 print("\nPlease select 1, 2, or 3.")
                 continue
-            self.input_accepted = True # Input is accepted if it's 1, 2, or 3, but can be changed later if the user is changing the date below.
+            self.input_accepted = True # Input is accepted if it's 1, 2, or 3, but will be changed later if the user is changing the date below (so the user has a chance to specify hours or minutes after changing the date).
 
             # Defaults to hours unless the user has specified otherwise
             self.units = "hours"
