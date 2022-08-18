@@ -51,17 +51,21 @@ class GetInput:
             self.print_date_info()
         elif self.date_request.status_code == 404:
             # If date's webpage does not exist, the user is informed that there is no data for this date. The user-supplied data here will be the first data for this date.
+            print(logo)
             print(f"No data for {self.date_to_user}.")
         elif self.date_request.status_code == 500:
+            print(logo)
             print(f"Pixela internal server error. Retry.\n\nStatus code:\n{self.date_request.status_code}\n\nResponse (text):\n{self.date_request.text}\n\nPress Enter to exit.\n")
             input()
             sys.exit()
         elif self.date_request.status_code == 503:
+            print(logo)
             print(f"Pixela service unavailable. Site is likely down.\n\nStatus code:\n{self.date_request.status_code}\n\nResponse (text):\n{self.date_request.text}\n\nPress Enter to exit.\n")
             input()
             sys.exit()
         else:
             # Status code should ONLY be 200 (existing data) or 404 (no data yet but this process will add first data). Anything else requires investigation.
+            print(logo)
             input(f"Unexpected status code response for {self.date_to_user}:\n{self.date_request.status_code}\n\nPress Enter to exit.\n")
             sys.exit()
 
@@ -87,30 +91,47 @@ class GetInput:
 
     # Obatining the date the user wants to update if not the current date
     def get_new_date(self):
-        # Date formats to be tested against. Add any formats to this tuple to improve user input options.
-        self.date_parse_list = ("%m/%d/%y", "%m/%d/%Y", "%b %d %y", "%b %d %Y", "%B %d %y", "%B %d %Y")
-
         self.date_valid = False
         while self.date_valid == False:
-            self.new_date = input("\nWhat date do you want to change?\n")
+            # Date formats to be tested against. Add any formats to this tuple to improve user input options.
+            date_parse_list = ("%m/%d/%y", "%m/%d/%Y", "%b %d %y", "%b %d %Y", "%B %d %y", "%B %d %Y")
+
+            new_date = input("\nWhat date do you want to change?\n")
             # Strip input, change possible delimiters to "/", remove any commas (e.g., "August 1, 2022")
-            self.new_date = self.new_date.strip().replace("-", "/").replace(".", "/").replace(",", "")
+            new_date = new_date.strip().replace("-", "/").replace(".", "/").replace(",", "")
 
-            if self.new_date.lower() == "exit" or self.new_date.lower() == "close": sys.exit()
+            if new_date.lower() == "exit" or new_date.lower() == "close": sys.exit()
 
-            if self.new_date.lower() == "back":
+            if new_date == "":
+                print("\nPlease enter a date.")
+                continue
+
+            if new_date.lower() == "back":
                 self.clear_screen()
                 self.print_date_info()
                 return
 
-            # Loops through all date format options. If formatting succeeds, breaks out of the loop.
-            for parse_attempt in self.date_parse_list:
-                try: self.new_date_obj = datetime.datetime.strptime(self.new_date, parse_attempt)
-                except: self.new_date_obj = None
-                else: break
+            # Loops through all date format options.
+            # First loop attempt tests user's input with year appended as different strings (e.g., "/2022" and " 2022"). Second tries it assuming user provided the year.
+            # If formatting succeeds, breaks out of the loop.
+            cur_year = str(datetime.datetime.now().year)
+            user_date_append = ("/" + cur_year, " " + cur_year)
+
+            self.new_date_obj = None
+            for parse_attempt in date_parse_list:
+                if self.new_date_obj != None: break
+                for date_append in user_date_append:
+                    try: self.new_date_obj = datetime.datetime.strptime(new_date + date_append, parse_attempt)
+                    except: self.new_date_obj = None
+                    else: break
+
+            if self.new_date_obj == None:
+                for parse_attempt in date_parse_list:
+                    try: self.new_date_obj = datetime.datetime.strptime(new_date, parse_attempt)
+                    except: self.new_date_obj = None
+                    else: break
 
             if self.new_date_obj == None: print("\nCould not parse. Please try again.\n") # Validation failed
-
             # Validation succeeded. Changes class date variables to new date, displays the new date's data to the user, and ends the while loop
             else:
                 if self.new_date_obj.date() > datetime.datetime.today().date():
