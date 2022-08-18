@@ -38,6 +38,7 @@ class GetInput:
     def clear_screen(self): os.system("cls")
 
     def get_pixela_data(self):
+        print("\nCommunicating with Pixela API...")
         # Make a date request. This should never throw an error; the worst case scenario is a 404 or other unexpected response.
         self.date_request = requests.get(url=f"{self.PIXELA_ENDPOINT}/{self.USERNAME}/graphs/{self.graph_id}/{self.date_to_update}", headers=self.headers)
         self.clear_screen()
@@ -46,7 +47,8 @@ class GetInput:
         self.existing_val = 0
         if self.date_request.status_code == 200:  # Date in question has existing data
             # Obtains relevant day's data, received as a JSON file, converts to dict, extracts quantity (hours), converts from str to float.
-            self.existing_val = float(json.loads(requests.get(url=f"{self.PIXELA_ENDPOINT}/{self.USERNAME}/graphs/{self.graph_id}/{self.date_to_update}",headers=self.headers).text)["quantity"])
+            self.existing_val = float(json.loads(self.date_request.text)["quantity"])
+            # self.existing_val = float(json.loads(requests.get(url=f"{self.PIXELA_ENDPOINT}/{self.USERNAME}/graphs/{self.graph_id}/{self.date_to_update}",headers=self.headers).text)["quantity"])
             # Informs the user of the relevant day's current value (hours).
             self.print_date_info()
         elif self.date_request.status_code == 404:
