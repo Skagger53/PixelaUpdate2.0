@@ -155,6 +155,6 @@ class GetInput:
             except ValueError: print("\nPlease enter a valid float.")
             else:
                 # Pixela is set to only accept hours, so if minutes are entered by user, they're converted to hours.
-                if self.units == "minutes": self.new_val = self.new_val / 60
+                if self.units == "minutes": self.new_val = round(self.new_val / 60, 2)
 
                 self.input_accepted = True
