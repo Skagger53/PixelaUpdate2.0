@@ -4,3 +4,4 @@ graph_setup_backup.py
 __pycache__/get_input_class.cpython-310.pyc
 __pycache__/logins.cpython-310.pyc
 __pycache__/logo.cpython-310.pyc
+*.pyc
